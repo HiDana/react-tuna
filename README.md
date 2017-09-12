@@ -1,3 +1,5 @@
+- add scss & reducx in create-react-app
+---
 ## Start
 ```
 $ npm install
