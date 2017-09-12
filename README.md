@@ -1,4 +1,4 @@
-- add scss & reducx in create-react-app
+- add scss & redux in create-react-app
 ---
 ## Start
 ```
