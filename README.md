@@ -1,11 +1,7 @@
+## Start
 ```
-npm install
-```
-
-
-```
-npm start
-npm build
+$ npm install
+$ npm start
 ```
 
 
@@ -22,13 +18,20 @@ my-app/
     index.html
     favicon.ico
   src/
-		components/
-		scss/
-			app.scss
-			index.scss
-		style/
-			App.css
-			App.js
+    actions/
+		  index.js
+      types.js  
+    components/
+      redux.js
+    reducers/
+      index.js
+      reducerTest.js
+    scss/
+      app.scss
+      index.scss
+    style/
+      App.css
+      App.js
     App.test.js
     index.css
     index.js
@@ -36,6 +39,7 @@ my-app/
 		registerServiceWorker.js
 ```
 
+### Reference from feng619/react-app-starter - redux
 
 
 ## Available Scripts
