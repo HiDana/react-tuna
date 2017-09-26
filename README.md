@@ -1,4 +1,4 @@
-- add scss & redux in create-react-app
+- add scss & redux & route in create-react-app
 ---
 ## Start
 ```
@@ -25,6 +25,8 @@ my-app/
       types.js  
     components/
       redux.js
+      routeA.js
+      routeB.js
     reducers/
       index.js
       reducerTest.js
