@@ -1,0 +1,256 @@
+*{
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+             "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+             SimSun, sans-serif;
+	letter-spacing: .2em;
+}
+
+// header.scss
+#header{
+	height: 50px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #4EA1D3;
+	padding: 0 15px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, .5);
+	.header-left,.header-right{
+		display: flex;
+	}
+	.logo{
+		// border: 1px solid #a00;
+		img{
+			height: 30px;
+			margin-right: 10px;
+		}
+	}
+	.tuna-operating{
+		display: flex;
+	}
+	.user_info{
+		display: flex;
+		.user_role,.user_name{
+			color: #fff;
+			font-size: 20px;
+			margin: 0 10px 0 0;
+		}
+		.user_role{
+			font-size: 12px;
+			margin-top: 8px;
+		}
+	}
+	.tuna-btn{
+		font-size: 14px;
+		color: #fff;
+		border: 1px solid #fff;
+		border-radius: 3px;
+		padding: 3px 9px;
+		margin: 0 15px;
+		position: relative;
+		cursor: pointer;
+		a{
+			color: #fff;
+		}
+		.tuna_card{
+			width: 300px;
+			position: absolute;
+			top: 20px;
+			margin-left: -30px;
+			padding-top: 20px;
+			display: none;
+			z-index: 1000;
+			.tuna_card-inner{
+				padding: 10px 15px;
+				background-color: #454552;
+				border-radius: 5px;
+				display: flex;
+				flex-direction: column;
+				input{
+					margin: 10px 0;
+				}
+				button{
+					color: #fff;
+					background-color: #4EA1D3;
+					border: #4EA1D3;
+				}
+				.tuna-btn-add{
+					margin: 10px 0;
+				}
+			}
+			&:before{
+				content: '';
+				position: absolute;
+				top: 10px;
+				left: 50px;
+				border-left: 10px solid transparent;
+				border-right: 10px solid transparent;
+				border-bottom: 10px solid #454552;
+			}
+		}
+		&:hover{
+			.tuna_card{
+				
+				display: block;
+			}
+		}
+	}
+}
+
+// login.scss
+#user{
+		width: 100%;
+		height: 100vh;
+		background: #ededed;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+	
+	.box {
+		width: 600px;
+		height: 600px;
+		border-radius: 5px;
+		box-shadow: 0 2px 30px rgba(black, .2);
+		background: lighten(#f0f4c3, 10%);
+		position: relative;
+		overflow: hidden;
+		transform: translate3d(0, 0, 0);
+	}
+	
+	.wave {
+		opacity: .4;
+		position: absolute;
+		top: 3%;
+		left: 50%;
+		background: #0af;
+		width: 1000px;
+		height: 1000px;
+		margin-left: -500px;
+		margin-top: -500px;
+		transform-origin: 50% 48%;
+		border-radius: 43%;
+		animation: drift 5000ms infinite linear;
+	}
+	
+	.wave.-three {
+		animation: drift 7000ms infinite linear;
+	}
+	
+	.wave.-two {
+		animation: drift 9000ms infinite linear;
+		opacity: .1;
+		background: yellow;
+	}
+	
+	.box:after {
+		content: '';
+		display: block;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(to bottom, rgba(#e8a, 1), rgba(#def, 0) 80%, rgba(white, .5));
+		z-index: 11;
+		transform: translate3d(0, 0, 0);
+	}
+	
+	.title {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		z-index: 1;
+		text-align: center;
+		transform: translate3d(0, 0, 0);
+		color: white;
+		text-transform: uppercase;
+		letter-spacing: .4em;
+		font-size: 24px;
+		text-shadow: 0 1px 0 rgba(black, .1);
+		text-indent: .3em;
+		.login{
+			height: 450px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			.logo{
+				width: 30%;
+			}
+			input{
+				width: 80%;
+				margin: 20px 0 10px 0;
+			}
+			button{
+				// color: #4EA1D3;
+				color: #454552;
+			}
+
+		}
+		
+	}
+	@keyframes drift {
+		from { transform: rotate(0deg); }
+		from { transform: rotate(360deg); }
+	}
+}
+
+
+//tuna
+#tuna{
+	.tuna_body{
+		// border: 1px solid #a00;
+		width: 100%;
+		height: calc(100vh - 50px);
+		overflow: hidden;
+	}
+}
+
+
+//Fish
+#fish{
+	width: 100%;
+	height: 100%;
+	margin-top: 10px;
+	#demo{
+		height: 100%;
+	}
+}
+
+
+//fishInfo
+#fishInfo{
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	margin-top: 50px;
+	padding: 20px 30px;
+	background-color: #454552;
+	border-radius: 5px;
+	box-shadow: 0 0px 8px rgba(0, 0, 0, .3);
+	.info_subset{
+		p{
+			color: #bdbdbd;
+			font-size: 10px;
+			font-weight: 200;
+		}
+		h1{
+			color: #fff;
+			font-size: 38px;
+		}
+		h4{
+			color: #bdbdbd;
+			font-size: 8px;
+			font-weight: 300;
+			span{
+				color: #fff;
+				font-size: 18px;
+				font-weight: 400;
+			}
+		}
+		
+	}
+}

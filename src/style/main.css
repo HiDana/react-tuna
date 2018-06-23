@@ -1,0 +1,190 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif;
+  letter-spacing: .2em; }
+
+#header {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #4EA1D3;
+  padding: 0 15px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); }
+  #header .header-left, #header .header-right {
+    display: flex; }
+  #header .logo img {
+    height: 30px;
+    margin-right: 10px; }
+  #header .tuna-operating {
+    display: flex; }
+  #header .user_info {
+    display: flex; }
+    #header .user_info .user_role, #header .user_info .user_name {
+      color: #fff;
+      font-size: 20px;
+      margin: 0 10px 0 0; }
+    #header .user_info .user_role {
+      font-size: 12px;
+      margin-top: 8px; }
+  #header .tuna-btn {
+    font-size: 14px;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    padding: 3px 9px;
+    margin: 0 15px;
+    position: relative;
+    cursor: pointer; }
+    #header .tuna-btn a {
+      color: #fff; }
+    #header .tuna-btn .tuna_card {
+      width: 300px;
+      position: absolute;
+      top: 20px;
+      margin-left: -30px;
+      padding-top: 20px;
+      display: none;
+      z-index: 1000; }
+      #header .tuna-btn .tuna_card .tuna_card-inner {
+        padding: 10px 15px;
+        background-color: #454552;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column; }
+        #header .tuna-btn .tuna_card .tuna_card-inner input {
+          margin: 10px 0; }
+        #header .tuna-btn .tuna_card .tuna_card-inner button {
+          color: #fff;
+          background-color: #4EA1D3;
+          border: #4EA1D3; }
+        #header .tuna-btn .tuna_card .tuna_card-inner .tuna-btn-add {
+          margin: 10px 0; }
+      #header .tuna-btn .tuna_card:before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 50px;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid #454552; }
+    #header .tuna-btn:hover .tuna_card {
+      display: block; }
+
+#user {
+  width: 100%;
+  height: 100vh;
+  background: #ededed;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  #user .box {
+    width: 600px;
+    height: 600px;
+    border-radius: 5px;
+    box-shadow: 0 2px 30px rgba(0, 0, 0, 0.2);
+    background: #fbfcee;
+    position: relative;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0); }
+  #user .wave {
+    opacity: .4;
+    position: absolute;
+    top: 3%;
+    left: 50%;
+    background: #0af;
+    width: 1000px;
+    height: 1000px;
+    margin-left: -500px;
+    margin-top: -500px;
+    transform-origin: 50% 48%;
+    border-radius: 43%;
+    animation: drift 5000ms infinite linear; }
+  #user .wave.-three {
+    animation: drift 7000ms infinite linear; }
+  #user .wave.-two {
+    animation: drift 9000ms infinite linear;
+    opacity: .1;
+    background: yellow; }
+  #user .box:after {
+    content: '';
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #ee88aa, rgba(221, 238, 255, 0) 80%, rgba(255, 255, 255, 0.5));
+    z-index: 11;
+    transform: translate3d(0, 0, 0); }
+  #user .title {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
+    transform: translate3d(0, 0, 0);
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: .4em;
+    font-size: 24px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    text-indent: .3em; }
+    #user .title .login {
+      height: 450px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center; }
+      #user .title .login .logo {
+        width: 30%; }
+      #user .title .login input {
+        width: 80%;
+        margin: 20px 0 10px 0; }
+      #user .title .login button {
+        color: #454552; }
+
+@keyframes drift {
+  from {
+    transform: rotate(0deg); }
+  from {
+    transform: rotate(360deg); } }
+
+#tuna .tuna_body {
+  width: 100%;
+  height: calc(100vh - 50px);
+  overflow: hidden; }
+
+#fish {
+  width: 100%;
+  height: 100%;
+  margin-top: 10px; }
+  #fish #demo {
+    height: 100%; }
+
+#fishInfo {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  margin-top: 50px;
+  padding: 20px 30px;
+  background-color: #454552;
+  border-radius: 5px;
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.3); }
+  #fishInfo .info_subset p {
+    color: #bdbdbd;
+    font-size: 10px;
+    font-weight: 200; }
+  #fishInfo .info_subset h1 {
+    color: #fff;
+    font-size: 38px; }
+  #fishInfo .info_subset h4 {
+    color: #bdbdbd;
+    font-size: 8px;
+    font-weight: 300; }
+    #fishInfo .info_subset h4 span {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 400; }
