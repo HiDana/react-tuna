@@ -3,11 +3,62 @@ import echarts from "echarts";
 import "../../style/main.css";
 
 //fackData
-import webkitDep from "./data/testData.json";
+import fakeTunaData from "./data/testData.json";
 
 class Fish extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tunaData: fakeTunaData,
+      newFishInfo: { detail: null }
+    };
+  }
+
   componentDidMount() {
+    const { tunaData } = this.state;
+    this.make_chart(tunaData);
+  }
+  componentWillReceiveProps(nextProps) {
+    const oldFishInfo = this.state.newFishInfo;
+    const { newFishInfo } = nextProps;
+
+    if (newFishInfo !== oldFishInfo.detail) {
+      const categories = { 太平洋: 0, 大西洋: 1, 印度洋: 2, 北冰洋: 3, 南冰洋: 4, Other: 5 };
+      console.log("nextProps", newFishInfo);
+      const newNodes = {
+        name: newFishInfo.key,
+        detail: newFishInfo,
+        value: 1,
+        category: categories[newFishInfo.location]
+      };
+
+      const tunaData = {
+        ...fakeTunaData,
+        nodes: fakeTunaData.nodes.concat(newNodes)
+      };
+      this.make_chart(tunaData);
+      this.setState({ newFishInfo: newNodes });
+    }
+  }
+  rnd(start, end) {
+    return Math.floor(Math.random() * (end - start) + start);
+  }
+
+  make_chart = tunaData => {
+    // const nodes_length = tunaData.nodes.length;
+    // const renLinks = [];
+    // for (let i = 0; i < this.rnd(nodes_length, nodes_length / 2); i++) {
+    //   const renderLink = {
+    //     source: this.rnd(nodes_length, 0),
+    //     target: this.rnd(nodes_length, 0)
+    //   };
+    //   renLinks.push(renderLink);
+    // }
+
     let option = {
+      tooltip: {
+        triggerOn: "mousemove|click"
+      },
       legend: {
         data: [
           {
@@ -48,11 +99,11 @@ class Fish extends Component {
             }
           },
           draggable: true,
-          data: webkitDep.nodes.map(function(node, idx) {
+          data: tunaData.nodes.map(function(node, idx) {
             node.id = idx;
             return node;
           }),
-          categories: webkitDep.categories,
+          categories: tunaData.categories,
           force: {
             // initLayout: 'circular'
             // repulsion: 20,
@@ -60,18 +111,24 @@ class Fish extends Component {
             repulsion: 20,
             gravity: 0.2
           },
-          edges: webkitDep.links
+          edges: [
+            {
+              source: 0,
+              target: 1
+            }
+          ],
+          focusNodeAdjacency: true
         }
-      ],
-      tooltip: {
-        triggerOn: "mousemove|click"
-      },
-      events: {}
+      ]
     };
 
     let myCharts = echarts.init(document.getElementById("demo"));
     myCharts.setOption(option);
-  }
+
+    myCharts.on("mouseover", params => {
+      this.props.cb_fishInfo(params);
+    });
+  };
 
   render() {
     return (

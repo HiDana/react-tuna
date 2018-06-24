@@ -10,13 +10,28 @@ import FishInfo from "../../components/fishInfo/FishInfo";
 // import img_map2 from "../../images/map2.jpg";
 
 class Tuna extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fishInfo: null,
+      newFishInfo: null
+    };
+  }
+
+  get_fishInfo = detail => {
+    this.setState({ fishInfo: detail });
+  };
+  get_newFishInfo = newInfo => {
+    this.setState({ newFishInfo: newInfo });
+  };
   render() {
+    const { fishInfo, newFishInfo } = this.state;
     return (
       <div id="tuna">
-        <Header />
+        <Header cb_newFishInfo={this.get_newFishInfo} />
         <div className="tuna_body">
-          <Fish />
-          <FishInfo />
+          <Fish cb_fishInfo={this.get_fishInfo} newFishInfo={newFishInfo} />
+          <FishInfo fishInfo={fishInfo} />
         </div>
       </div>
     );

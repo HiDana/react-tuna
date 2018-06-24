@@ -8,7 +8,27 @@ const Search = Input.Search;
 const Option = Select.Option;
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userRole: "admin"
+    };
+  }
+
+  add_newFish = () => {
+    const newFishInfo = {
+      key: "22",
+      vessel: "永和號",
+      timestamp: "20180620",
+      location: "太平洋",
+      holder: "dada"
+    };
+    this.props.cb_newFishInfo(newFishInfo);
+  };
+  add_newUser() {}
+
   render() {
+    const { userRole } = this.state;
     return (
       <div id="header">
         <div className="header-left">
@@ -22,11 +42,6 @@ class Header extends Component {
               <span>新增 <Icon type="plus" /></span>
               <div className="tuna_card">
                 <div className="tuna_card-inner">
-                  {/* <Radio.Group value={"west"} onChange={this.handleSizeChange}>
-                    <Radio.Button value="west">西部海域</Radio.Button>
-                    <Radio.Button value="center">中部海域</Radio.Button>
-                    <Radio.Button value="East">東部大陸</Radio.Button>
-                  </Radio.Group> */}
                   <Input placeholder="輸入 姓名" />
                   <Input placeholder="輸入 船名" />
                   {/* <Input placeholder="輸入 捕撈位置" /> */}
@@ -48,10 +63,17 @@ class Header extends Component {
                     <Option value="other">其他</Option>
                   </Select>
                   <Input placeholder="輸入 捕撈時間" />
-                  <Button type="primary" className="tuna-btn-add">新增</Button>
+                  <Button
+                    type="primary"
+                    className="tuna-btn-add"
+                    onClick={this.add_newFish}
+                  >
+                    新增
+                  </Button>
                 </div>
               </div>
             </div>
+
             <div className="tuna-search tuna-btn">
               <span>搜尋 <Icon type="search" /></span>
               <div className="tuna_card">
@@ -64,6 +86,25 @@ class Header extends Component {
                 </div>
               </div>
             </div>
+
+            {userRole === "admin"
+              ? <div className="tuna-search tuna-btn">
+                  <span>新增使用者 <Icon type="user-add" /></span>
+                  <div className="tuna_card">
+                    <div className="tuna_card-inner">
+                      <Input placeholder="輸入 新使用者名稱" />
+                      <Button
+                        type="primary"
+                        className="tuna-btn-add"
+                        onClick={this.add_newUser}
+                      >
+                        新增
+                      </Button>
+
+                    </div>
+                  </div>
+                </div>
+              : null}
           </div>
         </div>
         <div className="header-right">

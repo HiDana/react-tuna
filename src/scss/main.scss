@@ -6,6 +6,7 @@
              "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
              SimSun, sans-serif;
 	letter-spacing: .2em;
+	transition: .1s;
 }
 
 // header.scss
@@ -252,5 +253,31 @@
 			}
 		}
 		
+	}
+	.editStatus{
+		.info_subset{
+			margin: 10px 0;
+		}
+		.renew{
+			width: 100%;
+			text-align: right;
+		}
+	}
+	.info_edit{
+		display: block;
+		position: absolute;
+		top: 12px;
+		right: 15px;
+		color: #bdbdbd;
+		padding: 3px;
+		cursor: pointer;
+		&:hover{
+			color: #fff;
+		}
+		// text-align: right;
+
+	}
+	.info_edit-click{
+		display: none;
 	}
 }
