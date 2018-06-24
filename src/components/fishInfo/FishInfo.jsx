@@ -62,19 +62,19 @@ class FishInfo extends Component {
           <Input placeholder="擁有者" defaultValue={detail.holder} />
         </div>
         <div className="renew">
-          <Button ghost onClick={this.updateFishinfo.bind(this, detail)}>
+          <Button ghost onClick={() => this.updateFishinfo(detail)}>
             更新
           </Button>
         </div>
       </div>
     );
   }
-  updateFishinfo(detail) {
+  updateFishinfo = detail => {
     const { edit_status } = this.state;
     // console.log("detail", detail);
 
     this.setState({ edit_status: !edit_status });
-  }
+  };
 
   render() {
     const { fishInfo } = this.props;

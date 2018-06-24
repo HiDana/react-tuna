@@ -10,21 +10,25 @@ class Fish extends Component {
     super(props);
     this.state = {
       tunaData: fakeTunaData,
-      newFishInfo: { detail: null }
+      newFishInfo: { detail: null },
+      searchIndex: null
     };
   }
 
   componentDidMount() {
     const { tunaData } = this.state;
-    this.make_chart(tunaData);
+    this.make_chart(tunaData, null);
   }
   componentWillReceiveProps(nextProps) {
+    // console.log("nextProps", nextProps);
+    const { tunaData } = this.state;
     const oldFishInfo = this.state.newFishInfo;
-    const { newFishInfo } = nextProps;
+    const oldSearchIndex = this.state.searchIndex;
+    const { newFishInfo, searchIndex } = nextProps;
 
     if (newFishInfo !== oldFishInfo.detail) {
       const categories = { 太平洋: 0, 大西洋: 1, 印度洋: 2, 北冰洋: 3, 南冰洋: 4, Other: 5 };
-      console.log("nextProps", newFishInfo);
+      // console.log("nextProps", newFishInfo);
       const newNodes = {
         name: newFishInfo.key,
         detail: newFishInfo,
@@ -36,15 +40,21 @@ class Fish extends Component {
         ...fakeTunaData,
         nodes: fakeTunaData.nodes.concat(newNodes)
       };
-      this.make_chart(tunaData);
+
+      this.make_chart(tunaData, null);
       this.setState({ newFishInfo: newNodes });
+    }
+
+    if (searchIndex !== oldSearchIndex) {
+      this.make_chart(tunaData, searchIndex);
+      this.setState({ searchIndex });
     }
   }
   rnd(start, end) {
     return Math.floor(Math.random() * (end - start) + start);
   }
 
-  make_chart = tunaData => {
+  make_chart = (tunaData, searchIndex) => {
     // const nodes_length = tunaData.nodes.length;
     // const renLinks = [];
     // for (let i = 0; i < this.rnd(nodes_length, nodes_length / 2); i++) {
@@ -128,6 +138,13 @@ class Fish extends Component {
     myCharts.on("mouseover", params => {
       this.props.cb_fishInfo(params);
     });
+
+    if (searchIndex) {
+      myCharts.dispatchAction({
+        type: "focusNodeAdjacency",
+        dataIndex: 2
+      });
+    }
   };
 
   render() {

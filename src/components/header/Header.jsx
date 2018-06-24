@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Icon, Input, Button, Radio, Select } from "antd";
+import { Icon, Input, Button, Radio, Select, DatePicker } from "antd";
 import "../../style/main.css";
 //images
 import img_logo from "../../images/logo.png";
+//fake data
+import fakeTunaData from "../fish/data/testData.json";
+
 const Search = Input.Search;
 const Option = Select.Option;
 
@@ -11,24 +14,42 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userRole: "admin"
+      userRole: "admin",
+      btnStatus: { add: false, search: false, addUser: false },
+      tunaData: fakeTunaData,
+      newFishInfo: {
+        key: 1,
+        vessel: null,
+        timestamp: null,
+        location: null,
+        holder: null
+      }
     };
   }
 
   add_newFish = () => {
-    const newFishInfo = {
-      key: "22",
-      vessel: "永和號",
-      timestamp: "20180620",
-      location: "太平洋",
-      holder: "dada"
-    };
+    const { newFishInfo } = this.state;
+    console.log("newFishInfo", newFishInfo);
+
     this.props.cb_newFishInfo(newFishInfo);
   };
   add_newUser() {}
 
+  search(data) {
+    const { tunaData } = this.state;
+    console.log("data", data);
+    const nodes = tunaData.nodes;
+    nodes.filter((node, i) => {
+      if (node.detail.key === data) {
+        console.log(i);
+        this.props.cb_searchIndex(i, node);
+      }
+    });
+  }
+
   render() {
-    const { userRole } = this.state;
+    const { userRole, btnStatus, newFishInfo } = this.state;
+
     return (
       <div id="header">
         <div className="header-left">
@@ -38,31 +59,65 @@ class Header extends Component {
             </Link>
           </div>
           <div className="tuna-operating">
-            <div className="tuna-add tuna-btn">
-              <span>新增 <Icon type="plus" /></span>
-              <div className="tuna_card">
+
+            <div className="tuna_btn_block">
+              <div
+                className="tuna-add tuna-btn"
+                onClick={() =>
+                  this.setState({
+                    btnStatus: {
+                      add: !btnStatus.add,
+                      search: false,
+                      addUser: false
+                    }
+                  })}
+              >
+                <span>新增 <Icon type="plus" /></span>
+              </div>
+              <div className={btnStatus.add ? "tuna_card-open" : "tuna_card"}>
                 <div className="tuna_card-inner">
-                  <Input placeholder="輸入 姓名" />
-                  <Input placeholder="輸入 船名" />
-                  {/* <Input placeholder="輸入 捕撈位置" /> */}
+                  <Input
+                    placeholder="輸入 姓名"
+                    onChange={e =>
+                      this.setState({
+                        newFishInfo: { ...newFishInfo, holder: e.target.value }
+                      })}
+                  />
+                  <Input
+                    placeholder="輸入 船名"
+                    onChange={e =>
+                      this.setState({
+                        newFishInfo: { ...newFishInfo, vessel: e.target.value }
+                      })}
+                  />
                   <Select
                     showSearch
-                    style={{ width: 200 }}
                     placeholder="選擇 捕撈位置"
                     optionFilterProp="children"
                     filterOption={(input, option) =>
                       option.props.children
                         .toLowerCase()
                         .indexOf(input.toLowerCase()) >= 0}
+                    onChange={e =>
+                      this.setState({
+                        newFishInfo: { ...newFishInfo, location: e }
+                      })}
                   >
-                    <Option value="pacificOcean">太平洋</Option>
-                    <Option value="atlanticOcean">大西洋</Option>
-                    <Option value="indianOcean">印度洋</Option>
-                    <Option value="arcticOcean">北冰洋</Option>
-                    <Option value="antarcticaOcean">南冰洋</Option>
-                    <Option value="other">其他</Option>
+                    <Option value="太平洋">太平洋</Option>
+                    <Option value="大西洋">大西洋</Option>
+                    <Option value="印度洋">印度洋</Option>
+                    <Option value="北冰洋">北冰洋</Option>
+                    <Option value="南冰洋">南冰洋</Option>
+                    <Option value="其他">其他</Option>
                   </Select>
-                  <Input placeholder="輸入 捕撈時間" />
+                  <DatePicker
+                    placeholder="選擇 捕撈時間"
+                    onChange={(moment, e) =>
+                      this.setState({
+                        newFishInfo: { ...newFishInfo, timestamp: e }
+                      })}
+                  />
+
                   <Button
                     type="primary"
                     className="tuna-btn-add"
@@ -74,13 +129,27 @@ class Header extends Component {
               </div>
             </div>
 
-            <div className="tuna-search tuna-btn">
-              <span>搜尋 <Icon type="search" /></span>
-              <div className="tuna_card">
+            <div className="tuna_btn_block">
+              <div
+                className="tuna-search tuna-btn"
+                onClick={() =>
+                  this.setState({
+                    btnStatus: {
+                      add: false,
+                      search: !btnStatus.search,
+                      addUser: false
+                    }
+                  })}
+              >
+                <span>搜尋 <Icon type="search" /></span>
+              </div>
+              <div
+                className={btnStatus.search ? "tuna_card-open" : "tuna_card"}
+              >
                 <div className="tuna_card-inner">
                   <Search
                     placeholder="輸入 搜尋編號"
-                    onSearch={value => console.log(value)}
+                    onSearch={value => this.search(value)}
                     enterButton
                   />
                 </div>
@@ -88,9 +157,25 @@ class Header extends Component {
             </div>
 
             {userRole === "admin"
-              ? <div className="tuna-search tuna-btn">
-                  <span>新增使用者 <Icon type="user-add" /></span>
-                  <div className="tuna_card">
+              ? <div className="tuna_btn_block">
+                  <div
+                    className="tuna-addUser tuna-btn"
+                    onClick={() =>
+                      this.setState({
+                        btnStatus: {
+                          add: false,
+                          search: false,
+                          addUser: !btnStatus.addUser
+                        }
+                      })}
+                  >
+                    <span>新增使用者 <Icon type="user-add" /></span>
+                  </div>
+                  <div
+                    className={
+                      btnStatus.addUser ? "tuna_card-open" : "tuna_card"
+                    }
+                  >
                     <div className="tuna_card-inner">
                       <Input placeholder="輸入 新使用者名稱" />
                       <Button
@@ -113,10 +198,12 @@ class Header extends Component {
             <div className="user_name">Dana</div>
           </div>
           <div className="sign-out">
-            <div className="tuna-btn">
-              <Link to={`/login`}>
-                登出
-              </Link>
+            <div className="tuna_btn_block">
+              <div className="tuna-btn">
+                <Link to={`/login`}>
+                  登出
+                </Link>
+              </div>
             </div>
           </div>
         </div>

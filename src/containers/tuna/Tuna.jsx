@@ -14,7 +14,8 @@ class Tuna extends Component {
     super(props);
     this.state = {
       fishInfo: null,
-      newFishInfo: null
+      newFishInfo: null,
+      searchIndex: null
     };
   }
 
@@ -24,13 +25,24 @@ class Tuna extends Component {
   get_newFishInfo = newInfo => {
     this.setState({ newFishInfo: newInfo });
   };
+  search_fishIndex = (i, data) => {
+    console.log(i, data);
+    this.setState({ searchIndex: i, fishInfo: { data: data } });
+  };
   render() {
-    const { fishInfo, newFishInfo } = this.state;
+    const { fishInfo, newFishInfo, searchIndex } = this.state;
     return (
       <div id="tuna">
-        <Header cb_newFishInfo={this.get_newFishInfo} />
+        <Header
+          cb_newFishInfo={this.get_newFishInfo}
+          cb_searchIndex={this.search_fishIndex}
+        />
         <div className="tuna_body">
-          <Fish cb_fishInfo={this.get_fishInfo} newFishInfo={newFishInfo} />
+          <Fish
+            cb_fishInfo={this.get_fishInfo}
+            newFishInfo={newFishInfo}
+            searchIndex={searchIndex}
+          />
           <FishInfo fishInfo={fishInfo} />
         </div>
       </div>
