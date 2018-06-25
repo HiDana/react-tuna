@@ -23,6 +23,9 @@ class User extends Component {
                     登入
                   </Link>
                 </Button>
+                <Button>
+                  註冊
+                </Button>
               </div>
             </div>
           </div>

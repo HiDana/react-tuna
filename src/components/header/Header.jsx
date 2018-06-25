@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Icon, Input, Button, Radio, Select, DatePicker } from "antd";
+import moment from "moment";
 import "../../style/main.css";
 //images
 import img_logo from "../../images/logo.png";
@@ -18,10 +19,11 @@ class Header extends Component {
       btnStatus: { add: false, search: false, addUser: false },
       tunaData: fakeTunaData,
       newFishInfo: {
-        key: 1,
+        key: 99,
         vessel: null,
-        timestamp: null,
-        location: null,
+        timestamp: moment().format("YYYYMMDD"),
+        moment: moment(),
+        location: "太平洋",
         holder: null
       }
     };
@@ -29,19 +31,29 @@ class Header extends Component {
 
   add_newFish = () => {
     const { newFishInfo } = this.state;
+    delete newFishInfo.moment;
     console.log("newFishInfo", newFishInfo);
 
     this.props.cb_newFishInfo(newFishInfo);
+    this.setState({
+      newFishInfo: {
+        vessel: null,
+        timestamp: moment().format("YYYYMMDD"),
+        moment: moment(),
+        location: "太平洋",
+        holder: null
+      }
+    });
   };
   add_newUser() {}
 
   search(data) {
     const { tunaData } = this.state;
-    console.log("data", data);
+    // console.log("data", data);
     const nodes = tunaData.nodes;
     nodes.filter((node, i) => {
       if (node.detail.key === data) {
-        console.log(i);
+        // console.log(i);
         this.props.cb_searchIndex(i, node);
       }
     });
@@ -78,6 +90,7 @@ class Header extends Component {
                 <div className="tuna_card-inner">
                   <Input
                     placeholder="輸入 姓名"
+                    value={newFishInfo.holder}
                     onChange={e =>
                       this.setState({
                         newFishInfo: { ...newFishInfo, holder: e.target.value }
@@ -85,6 +98,7 @@ class Header extends Component {
                   />
                   <Input
                     placeholder="輸入 船名"
+                    value={newFishInfo.vessel}
                     onChange={e =>
                       this.setState({
                         newFishInfo: { ...newFishInfo, vessel: e.target.value }
@@ -93,6 +107,7 @@ class Header extends Component {
                   <Select
                     showSearch
                     placeholder="選擇 捕撈位置"
+                    value={newFishInfo.location}
                     optionFilterProp="children"
                     filterOption={(input, option) =>
                       option.props.children
@@ -110,12 +125,16 @@ class Header extends Component {
                     <Option value="南冰洋">南冰洋</Option>
                     <Option value="其他">其他</Option>
                   </Select>
+
                   <DatePicker
                     placeholder="選擇 捕撈時間"
-                    onChange={(moment, e) =>
+                    value={newFishInfo.moment}
+                    format={"YYYYMMDD"}
+                    onChange={(moment, e) => {
                       this.setState({
-                        newFishInfo: { ...newFishInfo, timestamp: e }
-                      })}
+                        newFishInfo: { ...newFishInfo, moment, timestamp: e }
+                      });
+                    }}
                   />
 
                   <Button
