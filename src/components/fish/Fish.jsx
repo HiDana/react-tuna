@@ -19,16 +19,18 @@ class Fish extends Component {
     const { tunaData } = this.state;
     this.make_chart(tunaData, null);
   }
+
   componentWillReceiveProps(nextProps) {
     // console.log("nextProps", nextProps);
     const { tunaData } = this.state;
+
     const oldFishInfo = this.state.newFishInfo;
     const oldSearchIndex = this.state.searchIndex;
     const { newFishInfo, searchIndex } = nextProps;
 
     if (newFishInfo !== oldFishInfo.detail) {
       const categories = { 太平洋: 0, 大西洋: 1, 印度洋: 2, 北冰洋: 3, 南冰洋: 4, Other: 5 };
-      // console.log("nextProps", newFishInfo);
+
       const newNodes = {
         name: newFishInfo.key,
         detail: newFishInfo,
@@ -36,13 +38,13 @@ class Fish extends Component {
         category: categories[newFishInfo.location]
       };
 
-      const tunaData = {
-        ...fakeTunaData,
-        nodes: fakeTunaData.nodes.concat(newNodes)
+      const newTunaData = {
+        ...tunaData,
+        nodes: tunaData.nodes.concat(newNodes)
       };
 
-      this.make_chart(tunaData, null);
-      this.setState({ newFishInfo: newNodes });
+      this.setState({ newFishInfo: newNodes, tunaData: newTunaData });
+      this.make_chart(newTunaData, null);
     }
 
     if (searchIndex !== oldSearchIndex) {

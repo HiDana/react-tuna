@@ -102,6 +102,10 @@
 	}
 }
 
+
+
+
+
 // login.scss
 #user{
 		width: 100%;
@@ -183,13 +187,41 @@
 			.logo{
 				width: 30%;
 			}
-			input{
-				width: 80%;
-				margin: 20px 0 10px 0;
-			}
-			button{
-				// color: #4EA1D3;
-				color: #454552;
+			.login_box{
+				display: flex;
+				flex-direction: column;
+				margin-left: 10px;
+				input{
+					width: 100%;
+					margin: 20px 0 10px 0;
+				}
+				.login_btn_box{
+					width: 100%;
+					display: flex;
+					justify-content: space-between;
+					margin-top: 10px;
+					.user_btn{
+						font-size: 14px;
+						border: 1px solid #fff;
+						border-radius: 4px;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						padding:3px 10px;
+						cursor: pointer;
+						a{
+							color: #fff;
+							padding-right: 2px;
+						}
+						&:hover{
+							background-color: #fff;
+							a{
+								color: #0af;
+							}
+						}
+					}
+
+				}
 			}
 
 		}
@@ -200,6 +232,11 @@
 		from { transform: rotate(360deg); }
 	}
 }
+
+
+
+
+
 
 
 //tuna
@@ -213,6 +250,11 @@
 }
 
 
+
+
+
+
+
 //Fish
 #fish{
 	width: 100%;
@@ -222,6 +264,12 @@
 		height: 100%;
 	}
 }
+
+
+
+
+
+
 
 
 //fishInfo

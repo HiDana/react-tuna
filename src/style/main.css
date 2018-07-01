@@ -142,11 +142,34 @@
       align-items: center; }
       #user .title .login .logo {
         width: 30%; }
-      #user .title .login input {
-        width: 80%;
-        margin: 20px 0 10px 0; }
-      #user .title .login button {
-        color: #454552; }
+      #user .title .login .login_box {
+        display: flex;
+        flex-direction: column;
+        margin-left: 10px; }
+        #user .title .login .login_box input {
+          width: 100%;
+          margin: 20px 0 10px 0; }
+        #user .title .login .login_box .login_btn_box {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          margin-top: 10px; }
+          #user .title .login .login_box .login_btn_box .user_btn {
+            font-size: 14px;
+            border: 1px solid #fff;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3px 10px;
+            cursor: pointer; }
+            #user .title .login .login_box .login_btn_box .user_btn a {
+              color: #fff;
+              padding-right: 2px; }
+            #user .title .login .login_box .login_btn_box .user_btn:hover {
+              background-color: #fff; }
+              #user .title .login .login_box .login_btn_box .user_btn:hover a {
+                color: #0af; }
 
 @keyframes drift {
   from {

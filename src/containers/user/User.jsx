@@ -16,16 +16,21 @@ class User extends Component {
           <div className="title">
             <div className="login">
               <img src={img_logo} alt="logo" className="logo" />
-              <div>
+              <div className="login_box">
                 <Input placeholder="user name" />
-                <Button>
-                  <Link to={`/`}>
-                    登入
-                  </Link>
-                </Button>
-                <Button>
-                  註冊
-                </Button>
+                <div className="login_btn_box">
+                  <div className="user_btn">
+                    <a>
+                      註冊
+                    </a>
+                  </div>
+                  <div className="user_btn">
+                    <Link to={`/`}>
+                      登入
+                    </Link>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>

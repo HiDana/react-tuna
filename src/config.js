@@ -1,4 +1,4 @@
 export const config = {
-  apiURL: "/api"
+  apiURL: "/cat"
   // apiURL: "http://localhost:9000"
 };

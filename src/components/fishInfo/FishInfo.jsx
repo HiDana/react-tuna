@@ -26,6 +26,9 @@ class FishInfo extends Component {
         <div className="info_subset">
           <h4>擁有者 <span>{detail.holder}</span></h4>
         </div>
+        <div className="info_subset">
+          <h4>捕撈船 <span>{detail.vessel}</span></h4>
+        </div>
       </div>
     );
   }
@@ -60,6 +63,9 @@ class FishInfo extends Component {
         </div>
         <div className="info_subset">
           <Input placeholder="擁有者" defaultValue={detail.holder} />
+        </div>
+        <div className="info_subset">
+          <Input placeholder="擁有者" defaultValue={detail.vessel} />
         </div>
         <div className="renew">
           <Button ghost onClick={() => this.updateFishinfo(detail)}>
