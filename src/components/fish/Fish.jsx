@@ -1,23 +1,50 @@
 import React, { Component } from "react";
+import axios from "axios";
 import echarts from "echarts";
+import { Button } from "antd";
 import "../../style/main.css";
-
+import { config } from "../../config";
+//data
+import categories from "./data/categories.json";
+import initData from "./data/initData.json";
+import { dialog } from "../fn/fn";
 //fackData
-import fakeTunaData from "./data/testData.json";
+// import fakeTunaData from "./data/testData.json";
 
 class Fish extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tunaData: fakeTunaData,
+      tunaData: null,
       newFishInfo: { detail: null },
-      searchIndex: null
+      searchIndex: null,
+      editFishInfo: null
     };
   }
 
-  componentDidMount() {
-    const { tunaData } = this.state;
-    this.make_chart(tunaData, null);
+  componentWillMount() {
+    axios
+      .get(`${config.apiURL}/tuna`)
+      .then(res => {
+        console.log(res.data);
+        if (res.data === "v_getTuna") {
+          const nodes = res.data.map(node => {
+            const newNode = {
+              name: node.key,
+              detail: node,
+              value: "",
+              category: categories[node.location]
+            };
+            return newNode;
+          });
+          const tunaData = { ...initData, nodes };
+          this.setState({ tunaData });
+          this.make_chart(tunaData, null);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -26,24 +53,23 @@ class Fish extends Component {
 
     const oldFishInfo = this.state.newFishInfo;
     const oldSearchIndex = this.state.searchIndex;
-    const { newFishInfo, searchIndex } = nextProps;
+    const oldEditFishInfo = this.state.editFishInfo;
+    const { newFishInfo, searchIndex, newEditFishInfo } = nextProps;
 
     if (newFishInfo !== oldFishInfo.detail) {
-      const categories = { 太平洋: 0, 大西洋: 1, 印度洋: 2, 北冰洋: 3, 南冰洋: 4, Other: 5 };
-
-      const newNodes = {
+      const newNode = {
         name: newFishInfo.key,
         detail: newFishInfo,
-        value: 1,
+        value: "",
         category: categories[newFishInfo.location]
       };
 
       const newTunaData = {
         ...tunaData,
-        nodes: tunaData.nodes.concat(newNodes)
+        nodes: tunaData.nodes.concat(newNode)
       };
 
-      this.setState({ newFishInfo: newNodes, tunaData: newTunaData });
+      this.setState({ newFishInfo: newNode, tunaData: newTunaData });
       this.make_chart(newTunaData, null);
     }
 
@@ -51,12 +77,39 @@ class Fish extends Component {
       this.make_chart(tunaData, searchIndex);
       this.setState({ searchIndex });
     }
+
+    if (newEditFishInfo !== oldEditFishInfo) {
+      const newNode = {
+        name: newEditFishInfo.key,
+        detail: newEditFishInfo,
+        value: "",
+        category: categories[newEditFishInfo.location]
+      };
+
+      let nodePosition;
+      const newNodes = tunaData.nodes.map((node, i) => {
+        if (node.name === newNode.name) {
+          nodePosition = i;
+          return newNode;
+        }
+        return node;
+      });
+
+      const newTunaData = { ...tunaData, nodes: newNodes };
+      this.props.cb_fishInfo({ data: newNode });
+      this.make_chart(newTunaData, nodePosition);
+      this.setState({ editFishInfo: newEditFishInfo, tunaData: newTunaData });
+    }
   }
   rnd(start, end) {
     return Math.floor(Math.random() * (end - start) + start);
   }
 
   make_chart = (tunaData, searchIndex) => {
+    // console.log("make_chart", tunaData, searchIndex);
+
+    //TODO 把支線邏輯存在本地端
+
     // const nodes_length = tunaData.nodes.length;
     // const renLinks = [];
     // for (let i = 0; i < this.rnd(nodes_length, nodes_length / 2); i++) {
@@ -138,18 +191,31 @@ class Fish extends Component {
     myCharts.setOption(option);
 
     myCharts.on("mouseover", params => {
+      console.log("params", params);
       this.props.cb_fishInfo(params);
     });
 
     if (searchIndex) {
       myCharts.dispatchAction({
         type: "focusNodeAdjacency",
-        dataIndex: 2
+        dataIndex: searchIndex
       });
     }
   };
 
   render() {
+    const { tunaData } = this.state;
+
+    if (!tunaData) {
+      return (
+        <div id="loading">
+          <Button loading>
+            Loading...
+          </Button>
+        </div>
+      );
+    }
+
     return (
       <div id="fish">
         <div id="demo" />;

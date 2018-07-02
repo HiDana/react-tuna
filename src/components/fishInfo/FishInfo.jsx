@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { Icon, Input, Select, Button } from "antd";
+import { config } from "../../config";
 import "../../style/main.css";
 
 const Option = Select.Option;
@@ -8,7 +10,9 @@ class FishInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      edit_status: false
+      userRole: localStorage.userRole,
+      edit_status: false,
+      editFishInfo: {}
     };
   }
   infoStatus(detail) {
@@ -32,11 +36,21 @@ class FishInfo extends Component {
       </div>
     );
   }
-  editStatus(detail) {
+  editStatus = detail => {
+    const { editFishInfo } = this.state;
+
     return (
       <div className="editStatus">
         <div className="info_subset timeStamp">
-          <Input placeholder="捕撈時間" defaultValue={detail.timestamp} />
+          <Input
+            placeholder="捕撈時間"
+            defaultValue={detail.timestamp}
+            onChange={e =>
+              this.setState({
+                editFishInfo: { ...editFishInfo, timestamp: e.target.value }
+              })}
+          />
+          {/* TODO time change to time picker */}
         </div>
         <div className="info_subset">
           <h1>{detail.key}</h1>
@@ -52,57 +66,99 @@ class FishInfo extends Component {
               option.props.children
                 .toLowerCase()
                 .indexOf(input.toLowerCase()) >= 0}
+            onChange={e =>
+              this.setState({
+                editFishInfo: { ...editFishInfo, location: e }
+              })}
           >
-            <Option value="pacificOcean">太平洋</Option>
-            <Option value="atlanticOcean">大西洋</Option>
-            <Option value="indianOcean">印度洋</Option>
-            <Option value="arcticOcean">北冰洋</Option>
-            <Option value="antarcticaOcean">南冰洋</Option>
-            <Option value="other">其他</Option>
+            <Option value="太平洋">太平洋</Option>
+            <Option value="大西洋">大西洋</Option>
+            <Option value="印度洋">印度洋</Option>
+            <Option value="北冰洋">北冰洋</Option>
+            <Option value="南冰洋">南冰洋</Option>
+            <Option value="其他">其他</Option>
           </Select>
         </div>
         <div className="info_subset">
-          <Input placeholder="擁有者" defaultValue={detail.holder} />
+          <Input
+            placeholder="擁有者"
+            defaultValue={detail.holder}
+            onChange={e =>
+              this.setState({
+                editFishInfo: { ...editFishInfo, holder: e.target.value }
+              })}
+          />
         </div>
         <div className="info_subset">
-          <Input placeholder="擁有者" defaultValue={detail.vessel} />
+          <Input
+            placeholder="擁有者"
+            defaultValue={detail.vessel}
+            onChange={e =>
+              this.setState({
+                editFishInfo: { ...editFishInfo, vessel: e.target.value }
+              })}
+          />
         </div>
         <div className="renew">
-          <Button ghost onClick={() => this.updateFishinfo(detail)}>
+          <Button
+            ghost
+            onClick={() => this.updateFishinfo({ ...detail, ...editFishInfo })}
+          >
             更新
           </Button>
         </div>
       </div>
     );
-  }
-  updateFishinfo = detail => {
+  };
+  updateFishinfo = newEditFishInfo => {
     const { edit_status } = this.state;
-    // console.log("detail", detail);
+    // console.log("newEditFishInfo", newEditFishInfo);
 
-    this.setState({ edit_status: !edit_status });
+    axios
+      .put(`${config.apiURL}/tuna?key=${newEditFishInfo.key}`, newEditFishInfo)
+      .then(res => {
+        if (res.data === "v_putTuna") {
+          console.log("[成功修正一條魚資訊]");
+          this.props.cb_newEditFishInfo(newEditFishInfo);
+          this.setState({ edit_status: !edit_status });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    // this.props.cb_newEditFishInfo(newEditFishInfo);
+    // this.setState({ edit_status: !edit_status });
   };
 
   render() {
     const { fishInfo } = this.props;
-    const { edit_status } = this.state;
-    if (!fishInfo) return <div>loading</div>;
+    const { userRole, edit_status } = this.state;
 
-    const fish_detail = fishInfo.data.detail;
+    if (!fishInfo) return null;
 
-    // console.log("render", fish_detail);
-    return (
-      <div id="fishInfo">
-        <div
-          className={edit_status ? "info_edit-click" : "info_edit"}
-          onClick={() => this.setState({ edit_status: !edit_status })}
-        >
-          <Icon type="edit" />
+    if (fishInfo.data.name) {
+      const fish_detail = fishInfo.data.detail;
+
+      return (
+        <div id="fishInfo">
+          {userRole === "admin"
+            ? <div
+                className={edit_status ? "info_edit-click" : "info_edit"}
+                onClick={() => this.setState({ edit_status: !edit_status })}
+              >
+                <Icon type="edit" />
+              </div>
+            : null}
+
+          {edit_status
+            ? this.editStatus(fish_detail)
+            : this.infoStatus(fish_detail)}
         </div>
-        {edit_status
-          ? this.editStatus(fish_detail)
-          : this.infoStatus(fish_detail)}
-      </div>
-    );
+      );
+    } else {
+      return null;
+    }
   }
 }
 

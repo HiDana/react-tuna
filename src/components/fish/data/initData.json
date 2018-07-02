@@ -1,0 +1,48 @@
+{
+	"type": "force",
+	"categories": [
+		{
+			"name": "太平洋",
+			"keyword": {},
+			"base": "太平洋"
+		},
+		{
+			"name": "大西洋",
+			"keyword": {},
+			"base": "大西洋"
+		},
+		{
+			"name": "印度洋",
+			"keyword": {},
+			"base": "印度洋"
+		},
+		{
+			"name": "北冰洋",
+			"keyword": {},
+			"base": "北冰洋"
+		},
+		{
+			"name": "南冰洋",
+			"keyword": {},
+			"base": "南冰洋"
+		},
+		{
+			"name": "Other",
+			"keyword": {}
+		}
+	],
+	"nodes": [
+		{
+			"name": "fish",
+			"detail": {
+				"key": "1",
+				"vessel": "ship1",
+				"timestamp": "20180603",
+				"location": "太平洋",
+				"holder": "hihi"
+			},
+			"value": 1,
+			"category": 4
+		}
+	]
+}
