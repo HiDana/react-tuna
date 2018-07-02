@@ -24,10 +24,10 @@ class Fish extends Component {
 
   componentWillMount() {
     axios
-      .get(`${config.apiURL}/tuna`)
+      .get(`${config.apiURL}/tunas`)
       .then(res => {
         console.log(res.data);
-        if (res.data === "v_getTuna") {
+        if (res.data === "v_getTunas") {
           const nodes = res.data.map(node => {
             const newNode = {
               name: node.key,
