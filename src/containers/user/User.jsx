@@ -23,44 +23,27 @@ class User extends Component {
     const { userName } = this.state;
     const admin_role = userName.split("_")[0] === "admin";
 
-    const postData = {
-      id: 11,
-      name: userName
-    };
-
     // const postData = {
+    //   id: 11,
     //   name: userName
     // };
+
+    const postData = {
+      name: userName
+    };
 
     if (admin_role) {
       console.log("[進行 管理者註冊流程]");
       axios
-        .get(`${config.apiURL}/admin`)
+        .post(`${config.apiURL}/admin`, postData)
         .then(res => {
           console.log(res.data);
-          if (res.data === "v_getAdmin") {
-            console.log("[確認管理者是否已註冊]");
-            const adminExist = res.data.find(
-              adminUser => adminUser.name === userName
-            );
-            if (!adminExist) {
-              console.log("[管理者不存在，註冊管理者中]");
-              axios
-                .post(`${config.apiURL}/admin`, postData)
-                .then(res => {
-                  console.log(res.data);
-                  if (res.data === "v_postAdmin") {
-                    console.log("[管理者註冊成功]");
-                    dialog("success", "註冊 管理員", `${userName} 註冊成功`);
-                  }
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-            } else {
-              console.log("[管理者已註冊]");
-              dialog("error", "註冊 管理員", "[管理者已註冊]");
-            }
+          if (res.data === "v_postAdmin") {
+            console.log("[管理者註冊成功]");
+            dialog("success", "註冊 管理員", `${userName} 註冊成功`);
+          } else if (res.data === "admin_alExists") {
+            console.log("[管理者已註冊]");
+            dialog("error", "註冊 管理員", "[管理者已註冊]");
           }
         })
         .catch(error => {
@@ -80,20 +63,17 @@ class User extends Component {
       const user_name = userName.split("_")[1];
 
       axios
-        .get(`${config.apiURL}/login`)
+        .post(`${config.apiURL}/login`)
         .then(res => {
           console.log(res.data);
-          if (res.data === "v_getLogin") {
-            const userExist = res.data.find(user => user.name === userName);
-            if (userExist) {
-              console.log("[管理者/使用者 存在，開始登入]");
-              localStorage.userName = user_name;
-              localStorage.userRole = user_role;
-              this.setState({ redirectToTuna: true });
-            } else {
-              console.log("[管理者/使用者 不存在，請先註冊]");
-              dialog("error", "登入", "[管理者/使用者 不存在，請先註冊]");
-            }
+          if (res.data === "v_postLogin") {
+            console.log("[管理者/使用者 存在，開始登入]");
+            localStorage.userName = user_name;
+            localStorage.userRole = user_role;
+            this.setState({ redirectToTuna: true });
+          } else if (res.data === "user_nExists") {
+            console.log("[管理者/使用者 不存在，請先註冊]");
+            dialog("error", "登入", "[管理者/使用者 不存在，請先註冊]");
           }
         })
         .catch(error => {
@@ -101,6 +81,7 @@ class User extends Component {
         });
     } else {
       console.log("[輸入框為空]");
+      dialog("error", "登入", "[輸入框為空]");
     }
   };
 
@@ -127,14 +108,11 @@ class User extends Component {
                 />
                 <div className="login_btn_box">
                   <div className="user_btn" onClick={this.register}>
-                    <a>
-                      註冊
-                    </a>
+                    <a>註冊</a>
                   </div>
                   <div className="user_btn" onClick={this.login}>
                     <a>登入</a>
                   </div>
-
                 </div>
               </div>
             </div>
