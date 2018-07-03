@@ -42,7 +42,7 @@ class Header extends Component {
 
   componentWillMount() {
     axios
-      .get(`${config.apiURL}/tunas`)
+      .get(`${config.apiURL}/tunas`, { withCredentials: true })
       .then(res => {
         console.log(res.data);
         if (res.data === "v_getTunas") {
@@ -96,8 +96,13 @@ class Header extends Component {
     console.log("postData", postData);
     console.log("[進行 新增一條魚流程]");
 
-    axios
-      .post(`${config.apiURL}/tuna`, postData)
+    axios({
+      method: "post",
+      url: `${config.apiURL}/tuna`,
+      data: postData,
+      timeout: 5000,
+      withCredentials: true
+    })
       .then(res => {
         console.log(res);
         if (res.data === "v_postTuna") {
@@ -154,9 +159,6 @@ class Header extends Component {
         url: `${config.apiURL}/user`,
         data: postData,
         timeout: 5000,
-        // headers: {
-        //   "X-Authorization": `admin_${userName}`
-        // },
         withCredentials: true
       })
         .then(res => {

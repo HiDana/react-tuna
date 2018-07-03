@@ -34,6 +34,7 @@ class User extends Component {
 
     if (admin_role) {
       console.log("[進行 管理者註冊流程]");
+
       axios
         .post(`${config.apiURL}/admin`, postData)
         .then(res => {
@@ -91,6 +92,11 @@ class User extends Component {
         .catch(error => {
           console.log(error);
         });
+
+      // //login local test
+      // localStorage.userName = user_name;
+      // localStorage.userRole = user_role;
+      // this.setState({ redirectToTuna: true });
     } else {
       console.log("[輸入框為空]");
       dialog("error", "登入", "[輸入框為空]");

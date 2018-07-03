@@ -113,9 +113,13 @@ class FishInfo extends Component {
   updateFishinfo = newEditFishInfo => {
     const { edit_status } = this.state;
     // console.log("newEditFishInfo", newEditFishInfo);
-
-    axios
-      .put(`${config.apiURL}/tuna?key=${newEditFishInfo.key}`, newEditFishInfo)
+    axios({
+      method: "put",
+      url: `${config.apiURL}/tuna?key=${newEditFishInfo.key}`,
+      data: newEditFishInfo,
+      timeout: 5000,
+      withCredentials: true
+    })
       .then(res => {
         if (res.data === "v_putTuna") {
           console.log("[成功修正一條魚資訊]");

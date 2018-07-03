@@ -23,8 +23,12 @@ class Fish extends Component {
   }
 
   componentWillMount() {
-    axios
-      .get(`${config.apiURL}/tunas`)
+    axios({
+      method: "get",
+      url: `${config.apiURL}/tunas`,
+      timeout: 5000,
+      withCredentials: true
+    })
       .then(res => {
         console.log(res.data);
         if (res.data === "v_getTunas") {
