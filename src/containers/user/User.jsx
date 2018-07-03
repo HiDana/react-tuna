@@ -69,8 +69,13 @@ class User extends Component {
       const user_role = userName.split("_")[0];
       const user_name = userName.split("_")[1];
 
-      axios
-        .post(`${config.apiURL}/login`, postData)
+      axios({
+        method: "post",
+        url: `${config.apiURL}/login`,
+        data: postData,
+        timeout: 5000,
+        withCredentials: true
+      })
         .then(res => {
           console.log(res.data);
           if (res.data === "v_postLogin") {

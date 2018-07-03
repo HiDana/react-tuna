@@ -153,10 +153,11 @@ class Header extends Component {
         method: "post",
         url: `${config.apiURL}/user`,
         data: postData,
-        timeout: 10000,
-        headers: {
-          "X-Authorization": `admin_${userName}`
-        }
+        timeout: 5000,
+        // headers: {
+        //   "X-Authorization": `admin_${userName}`
+        // },
+        withCredentials: true
       })
         .then(res => {
           console.log(res);
