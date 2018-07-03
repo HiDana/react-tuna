@@ -57,13 +57,20 @@ class User extends Component {
 
   login = () => {
     const { userName } = this.state;
+
     if (userName !== "") {
       console.log("[進行 管理者/使用者 登入流程]");
+      console.log("login_userName", userName);
+
+      const postData = {
+        name: userName
+      };
+
       const user_role = userName.split("_")[0];
       const user_name = userName.split("_")[1];
 
       axios
-        .post(`${config.apiURL}/login`)
+        .post(`${config.apiURL}/login`, postData)
         .then(res => {
           console.log(res.data);
           if (res.data === "v_postLogin") {
