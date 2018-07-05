@@ -186,6 +186,9 @@ class Header extends Component {
           if (res.data === "v_postUser") {
             console.log("[成功新增使用者]");
             dialog("success", "新增 使用者", `${newUserName} 新增成功`);
+          } else if (res.data === "user_alExists") {
+            console.log("[使用者已註冊]");
+            dialog("error", "註冊 使用者", "[使用者已註冊]");
           }
         })
         .catch(error => {
