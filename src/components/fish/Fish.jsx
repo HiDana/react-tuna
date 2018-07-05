@@ -62,6 +62,7 @@ class Fish extends Component {
     const { newFishInfo, searchIndex, newEditFishInfo } = nextProps;
 
     if (newFishInfo !== oldFishInfo.detail) {
+      console.log("[發現新的魚]", newFishInfo);
       const newNode = {
         name: newFishInfo.key,
         detail: newFishInfo,
@@ -73,17 +74,23 @@ class Fish extends Component {
         ...tunaData,
         nodes: tunaData.nodes.concat(newNode)
       };
+      const newFishNodePosition = newTunaData.nodes.length - 1;
+      // console.log("[新增魚的 nodes 位置]", newFishNodePosition);
 
       this.setState({ newFishInfo: newNode, tunaData: newTunaData });
-      this.make_chart(newTunaData, null);
+      this.props.cb_fishInfo({ data: newNode });
+      console.log("[塞進去一條魚到 state(for chart)]", newTunaData);
+      this.make_chart(newTunaData, newFishNodePosition);
     }
 
     if (searchIndex !== oldSearchIndex) {
+      console.log("[搜尋魚]", searchIndex);
       this.make_chart(tunaData, searchIndex);
       this.setState({ searchIndex });
     }
 
     if (newEditFishInfo !== oldEditFishInfo) {
+      console.log("[編輯魚]", newEditFishInfo);
       const newNode = {
         name: newEditFishInfo.key,
         detail: newEditFishInfo,
@@ -111,7 +118,7 @@ class Fish extends Component {
   }
 
   make_chart = (tunaData, searchIndex) => {
-    // console.log("make_chart", tunaData, searchIndex);
+    console.log("[重新 render chart]", tunaData, searchIndex);
 
     //TODO 把支線邏輯存在本地端
 
@@ -196,11 +203,12 @@ class Fish extends Component {
     myCharts.setOption(option);
 
     myCharts.on("mouseover", params => {
-      console.log("params", params);
+      console.log("[滑鼠碰到，取得該魚的資訊]", params);
       this.props.cb_fishInfo(params);
     });
 
     if (searchIndex) {
+      console.log("[找尋該魚位置,資訊]", searchIndex);
       myCharts.dispatchAction({
         type: "focusNodeAdjacency",
         dataIndex: searchIndex

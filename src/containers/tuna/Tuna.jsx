@@ -24,6 +24,7 @@ class Tuna extends Component {
     this.setState({ fishInfo: detail });
   };
   get_newFishInfo = newInfo => {
+    console.log("[新增一條魚 - Tuns(父) 準備轉發到 Fish(子)]", newInfo);
     this.setState({ newFishInfo: newInfo });
   };
   search_fishIndex = (i, data) => {

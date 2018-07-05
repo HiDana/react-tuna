@@ -96,49 +96,64 @@ class Header extends Component {
     const { tunaData, newFishInfo } = this.state;
     delete newFishInfo.moment;
 
-    // const postData = { ...newFishInfo, id: 99, key: "99" };
-    const postData = { ...newFishInfo };
-    console.log("postData", postData);
-    console.log("[進行 新增一條魚流程]");
-
-    axios({
-      method: "post",
-      url: `${config.apiURL}/tuna`,
-      data: postData,
-      timeout: 5000,
-      withCredentials: true
-    })
+    axios
+      .get(`${config.apiURL}/tunas`, { withCredentials: true })
       .then(res => {
-        console.log(res);
-        if (res.data === "v_postTuna") {
-          console.log("[新增一條魚成功]");
-          const newNodes = {
-            name: postData.key,
-            detail: postData,
-            value: "",
-            category: categories[postData.location]
-          };
+        if (res.status === 200) {
+          console.log("[成功撈到很多隻魚]");
+          console.log("[計算目前魚的總數]", res.data.length);
+          const newKey = res.data.length + 1;
+          // const postData = { ...newFishInfo, id: 99, key: "99" };
+          const postData = { ...newFishInfo, key: newKey.toString() };
+          console.log("postData", postData);
 
-          const newTunaData = {
-            ...tunaData,
-            nodes: tunaData.nodes.concat(newNodes)
-          };
+          console.log("[進行 新增一條魚流程]");
+          axios({
+            method: "post",
+            url: `${config.apiURL}/tuna`,
+            data: postData,
+            timeout: 5000,
+            withCredentials: true
+          })
+            .then(res => {
+              console.log(res);
+              if (res.data === "v_postTuna") {
+                console.log("[新增一條魚成功]");
+                const newNodes = {
+                  name: postData.key,
+                  detail: postData,
+                  value: "",
+                  category: categories[postData.location]
+                };
 
-          this.props.cb_newFishInfo(postData);
+                const newTunaData = {
+                  ...tunaData,
+                  nodes: tunaData.nodes.concat(newNodes)
+                };
 
-          this.setState({
-            tunaData: newTunaData,
-            newFishInfo: {
-              vessel: null,
-              timestamp: moment().format("YYYYMMDD"),
-              moment: moment(),
-              location: "太平洋",
-              holder: null
-            },
-            btnStatus: {
-              add: false
-            }
-          });
+                this.props.cb_newFishInfo(postData);
+                console.log("[新增一條魚 - Header(子) 傳 Tunas(父)]", postData);
+
+                this.setState({
+                  tunaData: newTunaData,
+                  newFishInfo: {
+                    vessel: null,
+                    timestamp: moment().format("YYYYMMDD"),
+                    moment: moment(),
+                    location: "太平洋",
+                    holder: null
+                  },
+                  btnStatus: {
+                    add: false
+                  }
+                });
+
+                console.log("[塞進去一條魚到 state(for search)]", newTunaData);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
         }
       })
       .catch(error => {
@@ -194,6 +209,7 @@ class Header extends Component {
     });
   }
   signOut = () => {
+    // TODO 刪除本地端 cookie
     console.log("[進行 登出流程]");
     localStorage.removeItem("userName");
     localStorage.removeItem("userRole");
@@ -213,7 +229,7 @@ class Header extends Component {
       return <Redirect push to="/login" />;
     }
 
-    //TODO 點到其他地方 選單自動收河
+    //TODO 點到其他地方 選單自動收合
 
     return (
       <div id="header">
