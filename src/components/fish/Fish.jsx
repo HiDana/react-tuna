@@ -23,15 +23,13 @@ class Fish extends Component {
   }
 
   componentWillMount() {
-    axios({
-      method: "get",
-      url: `${config.apiURL}/tunas`,
-      timeout: 5000,
-      withCredentials: true
-    })
+    axios
+      .get(`${config.apiURL}/tunas`, { withCredentials: true })
       .then(res => {
-        console.log(res.data);
-        if (res.data === "v_getTunas") {
+        if (res.status === 200) {
+          console.log("[成功撈到很多隻魚]");
+          console.log(res.data);
+
           const nodes = res.data.map(node => {
             const newNode = {
               name: node.key,
@@ -42,6 +40,9 @@ class Fish extends Component {
             return newNode;
           });
           const tunaData = { ...initData, nodes };
+
+          console.log("[重新 parser 魚的資料]");
+
           this.setState({ tunaData });
           this.make_chart(tunaData, null);
         }
@@ -211,6 +212,7 @@ class Fish extends Component {
     const { tunaData } = this.state;
 
     if (!tunaData) {
+      console.log("[loading...]");
       return (
         <div id="loading">
           <Button loading>

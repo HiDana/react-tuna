@@ -44,8 +44,9 @@ class Header extends Component {
     axios
       .get(`${config.apiURL}/tunas`, { withCredentials: true })
       .then(res => {
-        console.log(res.data);
-        if (res.data === "v_getTunas") {
+        if (res.status === 200) {
+          console.log("[成功撈到很多隻魚]");
+          console.log(res.data);
           const nodes = res.data.map(node => {
             const newNode = {
               name: node.key,
@@ -56,6 +57,9 @@ class Header extends Component {
             return newNode;
           });
           const tunaData = { ...initData, nodes };
+
+          console.log("[重新 parser 魚的資料]");
+
           this.setState({ tunaData });
         }
       })
@@ -69,7 +73,7 @@ class Header extends Component {
     const oldEditFishInfo = this.state.editFishInfo;
     const { newEditFishInfo } = nextProps;
 
-		//監聽修改魚的資訊
+    //監聽修改魚的資訊
     if (newEditFishInfo !== oldEditFishInfo) {
       const newNode = {
         name: newEditFishInfo.key,
