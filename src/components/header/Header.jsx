@@ -69,6 +69,7 @@ class Header extends Component {
     const oldEditFishInfo = this.state.editFishInfo;
     const { newEditFishInfo } = nextProps;
 
+		//監聽修改魚的資訊
     if (newEditFishInfo !== oldEditFishInfo) {
       const newNode = {
         name: newEditFishInfo.key,
